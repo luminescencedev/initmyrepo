@@ -15,6 +15,8 @@ import { config } from "./config.js";
 import { detectPM } from "./pm.js";
 import { scaffold } from "./scaffold.js";
 import { removeGitDir, gitInit } from "./git.js";
+import { loadExternalTemplates } from "./external-registry.js";
+import { generateCi } from "./ci.js";
 import { existsSync } from "fs";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -63,6 +65,7 @@ export async function runWizard(
   );
 
   const prefs = config.getPrefs();
+  const externalTemplates = await loadExternalTemplates();
 
   // ── 1. Project name ────────────────────────────────────────────────────────
   let projectName = presetName?.trim();
@@ -112,6 +115,15 @@ export async function runWizard(
         label: "Custom URL",
         hint: "Clone any git repository",
       },
+      ...(externalTemplates.length > 0
+        ? [
+            {
+              value: "__external" as const,
+              label: "Custom registries",
+              hint: `${externalTemplates.length} template${externalTemplates.length > 1 ? "s" : ""}`,
+            },
+          ]
+        : []),
     ],
   });
   if (esc(categoryChoice)) abort();
@@ -168,6 +180,17 @@ export async function runWizard(
 
     const fav = favs.find((f) => f.id === favChoice)!;
     customRepoUrl = fav.repoUrl;
+  } else if (categoryChoice === "__external") {
+    const tmplChoice = await p.select({
+      message: "Template",
+      options: externalTemplates.map((t) => ({
+        value: t.id,
+        label: t.badge ? `${t.name}  ${pc.dim(t.badge)}` : t.name,
+        hint: t.description,
+      })),
+    });
+    if (esc(tmplChoice)) abort();
+    selectedTemplate = externalTemplates.find((t) => t.id === tmplChoice)!;
   } else {
     // Normal category → pick a template
     const templates = TEMPLATES_BY_CATEGORY.get(categoryChoice as Category)!;
@@ -384,6 +407,28 @@ export async function runWizard(
     }
 
     const pmCmd = (pm as string) === "npm" ? "npm run" : (pm as string);
+
+    // ── CI/CD workflow ─────────────────────────────────────────────────────
+    if (selectedTemplate) {
+      const wantCi = await p.confirm({
+        message: "Add GitHub Actions CI workflow?",
+        initialValue: false,
+      });
+      if (!esc(wantCi) && wantCi) {
+        const s = p.spinner();
+        s.start(pc.dim("Generating CI workflow"));
+        try {
+          await generateCi(
+            finalPath,
+            pm as PackageManager,
+            selectedTemplate.category,
+          );
+          s.stop(pc.green("✓") + " .github/workflows/ci.yml added");
+        } catch {
+          s.stop(pc.yellow("⚠") + " CI generation skipped");
+        }
+      }
+    }
 
     config.savePrefs({
       lastPm: pm as PackageManager,

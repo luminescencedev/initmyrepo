@@ -91,7 +91,9 @@ export async function runDoctor(): Promise<void> {
 
   if (nodeOk && gitOk && npmOk) {
     console.log(
-      pc.green("  ✔ ") + pc.bold("All core prerequisites are satisfied.") + "\n",
+      pc.green("  ✔ ") +
+        pc.bold("All core prerequisites are satisfied.") +
+        "\n",
     );
   } else {
     console.log(

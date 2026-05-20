@@ -55,6 +55,11 @@ export interface Template {
    */
   steps: (ctx: ScaffoldContext) => Step[];
   /**
+   * Optional hooks run after the main steps (e.g. Prettier, ESLint, Husky).
+   * Failures are soft-warnings — they don't abort the scaffold.
+   */
+  postSteps?: (ctx: ScaffoldContext) => Step[];
+  /**
    * If true, the scaffold tool is interactive and will ask its own questions.
    * We just run it and let it take over.
    */

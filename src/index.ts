@@ -7,6 +7,7 @@ import { execa } from "execa";
 import { showBanner } from "./banner.js";
 import { runWizard, manageFavoritesFlow, runFavoriteFlow } from "./wizard.js";
 import { runDoctor } from "./doctor.js";
+import { runAdd } from "./add.js";
 import { config } from "./config.js";
 import { ALL_TEMPLATES, TEMPLATES_BY_CATEGORY } from "./registry/index.js";
 import { CATEGORY_LABELS } from "./types.js";
@@ -179,7 +180,16 @@ program
     }
     console.log();
   });
-
+// ── add ───────────────────────────────────────────────────────────────────────
+program
+  .command("add [app-name]")
+  .description(
+    "Add a new app to an existing monorepo (Turborepo · Nx · pnpm workspace)",
+  )
+  .action(async (appName?: string) => {
+    showBanner(version);
+    await runAdd(appName);
+  });
 // ── doctor ──────────────────────────────────────────────────────────────────
 program
   .command("doctor")
@@ -216,9 +226,7 @@ program
       bun: ["install", "-g", "initmyrepo@latest"],
     };
 
-    console.log(
-      pc.bold(`\n  Updating initmyrepo via ${pm}…\n`),
-    );
+    console.log(pc.bold(`\n  Updating initmyrepo via ${pm}…\n`));
 
     try {
       await execa(pm, installArgs[pm]!, { stdio: "inherit" });

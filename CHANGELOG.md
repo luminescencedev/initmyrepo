@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] — 2026-05-20
+
+### Added
+
+- `postSteps` field on templates: optional post-scaffold hooks (e.g. Prettier, ESLint, Husky) — failures are soft warnings, not errors
+- `initmyrepo add [app-name]`: scaffold a new app inside an existing Turborepo, Nx, or pnpm workspace, choosing `apps/` or `packages/`
+- External registries via `.initmyreporc.json`: declare custom templates inline or fetch remote JSON registries — they appear as a "Custom registries" option in the wizard
+- `registry.json` in repo: official community registry (initially empty, open to contributions)
+- GitHub Actions CI generation: wizard offers to create `.github/workflows/ci.yml` after scaffolding, adapted to the package manager and project category
+
 ## [1.1.0] — 2026-05-20
 
 ### Added

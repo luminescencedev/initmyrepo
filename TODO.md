@@ -41,11 +41,11 @@
 
 ## 🏗️ Priorité 5 — Grandes features
 
-- [ ] **Registre distant** : fichier JSON versionné sur GitHub fetchable pour mettre à jour les templates sans republier
-- [ ] **Plugins / registres custom** : `.initmyreporc.json` pour déclarer des registres supplémentaires
-- [ ] **`initmyrepo add <app>`** : ajouter une app dans un monorepo existant (détecte turbo/nx/pnpm)
-- [ ] **Post-scaffold hooks** : champ `postSteps` dans les templates (Prettier, ESLint, Husky…)
-- [ ] **Templates CI/CD** : option pour générer un `.github/workflows/ci.yml` adapté au template scaffoldé
+- [x] **Registre distant** : fichier JSON versionné sur GitHub fetchable pour mettre à jour les templates sans republier
+- [x] **Plugins / registres custom** : `.initmyreporc.json` pour déclarer des registres supplémentaires
+- [x] **`initmyrepo add <app>`** : ajouter une app dans un monorepo existant (détecte turbo/nx/pnpm)
+- [x] **Post-scaffold hooks** : champ `postSteps` dans les templates (Prettier, ESLint, Husky…)
+- [x] **Templates CI/CD** : option pour générer un `.github/workflows/ci.yml` adapté au template scaffoldé
 
 ---
 

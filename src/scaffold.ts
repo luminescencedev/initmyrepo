@@ -60,12 +60,32 @@ export async function scaffold(opts: RunOptions): Promise<string> {
           git: "https://git-scm.com/downloads",
         };
         const hint = install[step.cmd] ?? `npm install -g ${step.cmd}`;
-        throw new Error(
-          `Command not found: "${step.cmd}"\n  → ${hint}`,
-        );
+        throw new Error(`Command not found: "${step.cmd}"\n  → ${hint}`);
       }
 
       throw err;
+    }
+  }
+
+  // ── Post-scaffold hooks ───────────────────────────────────────────────────
+  if (template.postSteps) {
+    const postCtx = { projectName, pm, targetDir, language, css };
+    for (const step of template.postSteps(postCtx)) {
+      if (step.type === "install" && !opts.install) continue;
+      const s = p.spinner();
+      s.start(pc.dim(step.label));
+      const cwd = step.inProject ? projectPath : targetDir;
+      try {
+        if (step.fn) {
+          await step.fn({ projectPath, projectName });
+        } else {
+          await execa(step.cmd!, step.args!, { cwd, stdio: "pipe" });
+        }
+        s.stop(pc.green("✓") + " " + step.label);
+      } catch {
+        // postSteps are soft — warn but don't abort
+        s.stop(pc.yellow("⚠") + " " + step.label + pc.dim(" (skipped)"));
+      }
     }
   }
 
