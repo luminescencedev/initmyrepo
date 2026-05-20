@@ -1,0 +1,53 @@
+{
+  "name": "initmyrepo",
+  "version": "1.0.0",
+  "description": "Initialize any project — web, mobile, API, monorepo — in seconds",
+  "type": "module",
+  "bin": {
+    "initmyrepo": "./dist/index.js",
+    "imr": "./dist/index.js"
+  },
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.7.0",
+    "commander": "^12.1.0",
+    "conf": "^15.0.0",
+    "execa": "^9.3.0",
+    "picocolors": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsup": "^8.3.0",
+    "typescript": "^5.6.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "cli",
+    "scaffolding",
+    "templates",
+    "vite",
+    "next",
+    "expo",
+    "react",
+    "vue",
+    "svelte",
+    "astro",
+    "hono",
+    "nestjs",
+    "monorepo",
+    "turborepo",
+    "fullstack"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/luminescencedev/init-my-repo"
+  }
+}
