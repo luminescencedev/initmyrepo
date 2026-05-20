@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.1] — 2026-05-20
+
+### Fixed
+
+- `Dynamic require of "child_process" is not supported` crash on first `npx initmyrepo@latest` run: disabled code splitting (`splitting: false`) and injected a `createRequire` shim in the banner so CJS dependencies (`cross-spawn` / `execa`) can resolve Node built-ins in the ESM bundle
+
 ## [1.2.0] — 2026-05-20
 
 ### Added
