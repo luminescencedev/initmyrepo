@@ -34,6 +34,8 @@ export interface Step {
   inProject?: boolean;
   /** Run an async function instead of a shell command */
   fn?: (ctx: StepContext) => Promise<void>;
+  /** Tag as an install step — skipped when --no-install is passed */
+  type?: "install";
 }
 
 // ─── Template ────────────────────────────────────────────────────────────────

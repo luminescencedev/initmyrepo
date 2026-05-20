@@ -29,6 +29,7 @@ export async function scaffold(opts: RunOptions): Promise<string> {
   const steps = template.steps(ctx);
 
   for (const step of steps) {
+    if (step.type === "install" && !opts.install) continue;
     const s = p.spinner();
     s.start(pc.dim(step.label));
 

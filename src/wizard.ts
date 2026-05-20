@@ -15,6 +15,7 @@ import { config } from "./config.js";
 import { detectPM } from "./pm.js";
 import { scaffold } from "./scaffold.js";
 import { removeGitDir, gitInit } from "./git.js";
+import { existsSync } from "fs";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -46,7 +47,16 @@ function tag(text: string): string {
 
 // ─── Main wizard ──────────────────────────────────────────────────────────────
 
-export async function runWizard(presetName?: string): Promise<void> {
+export interface WizardOptions {
+  noInstall?: boolean;
+  noGit?: boolean;
+  dryRun?: boolean;
+}
+
+export async function runWizard(
+  presetName?: string,
+  wizardOpts?: WizardOptions,
+): Promise<void> {
   // Header
   p.intro(
     `${tag("initmyrepo")}  ${pc.dim("Initialize any project in seconds")}`,
@@ -67,6 +77,12 @@ export async function runWizard(presetName?: string): Promise<void> {
     });
     if (esc(answer)) abort();
     projectName = answer as string;
+  }
+
+  const targetDir = process.cwd();
+  if (existsSync(join(targetDir, projectName))) {
+    p.log.error(`"${projectName}" already exists in ${targetDir}.`);
+    abort("Choose a different project name.");
   }
 
   // ── 2. Category ────────────────────────────────────────────────────────────
@@ -233,7 +249,12 @@ export async function runWizard(presetName?: string): Promise<void> {
   const opts = await p.group(
     {
       git: () =>
-        p.confirm({ message: "Initialize git repository", initialValue: true }),
+        wizardOpts?.noGit
+          ? Promise.resolve(false as boolean)
+          : p.confirm({
+              message: "Initialize git repository",
+              initialValue: true,
+            }),
       vscode: () =>
         p.confirm({
           message: "Open in VS Code when done",
@@ -244,7 +265,7 @@ export async function runWizard(presetName?: string): Promise<void> {
   );
 
   // ── 6. Confirm ─────────────────────────────────────────────────────────────
-  const targetDir = process.cwd();
+
   const projectPath = join(targetDir, projectName);
   const templateLabel = selectedTemplate?.name ?? customRepoUrl ?? "?";
 
@@ -263,9 +284,48 @@ export async function runWizard(presetName?: string): Promise<void> {
       `${pc.dim("manager")}   ${pm as string}`,
       `${pc.dim("location")}  ${pc.dim(projectPath)}`,
       `${pc.dim("git")}       ${opts.git ? "yes" : "no"}`,
+      ...(wizardOpts?.noInstall
+        ? [`${pc.dim("install")}   ${pc.yellow("no (--no-install)")}`]
+        : []),
     ].join("\n"),
     "Summary",
   );
+
+  if (wizardOpts?.dryRun) {
+    if (selectedTemplate) {
+      const dryCtx = {
+        projectName,
+        pm: pm as PackageManager,
+        targetDir,
+        language,
+        css,
+      };
+      const drySteps = selectedTemplate.steps(dryCtx);
+      console.log(pc.bold("\n  Steps that would run:\n"));
+      drySteps.forEach((step, i) => {
+        const cmd = step.cmd
+          ? pc.dim(` → ${step.cmd} ${step.args?.join(" ") ?? ""}`)
+          : pc.dim(" → [fn]");
+        const skip =
+          step.type === "install" && wizardOpts.noInstall
+            ? pc.dim(" (skipped)")
+            : "";
+        console.log(`  ${pc.cyan(`${i + 1}.`)} ${step.label}${cmd}${skip}`);
+      });
+      if (opts.git as boolean) {
+        console.log(
+          `  ${pc.cyan(`${drySteps.length + 1}.`)} Git init + initial commit`,
+        );
+      }
+    } else if (customRepoUrl) {
+      console.log(pc.bold("\n  Steps that would run:\n"));
+      console.log(`  ${pc.cyan("1.")} Clone ${customRepoUrl}`);
+      if (opts.git as boolean) console.log(`  ${pc.cyan("2.")} Git reinit`);
+    }
+    console.log();
+    p.outro(pc.yellow("Dry run — nothing was created."));
+    return;
+  }
 
   const go = await p.confirm({
     message: "Create project?",
@@ -284,7 +344,7 @@ export async function runWizard(presetName?: string): Promise<void> {
         pm: pm as PackageManager,
         targetDir,
         git: opts.git as boolean,
-        install: true,
+        install: !(wizardOpts?.noInstall ?? false),
         language,
         css,
       });

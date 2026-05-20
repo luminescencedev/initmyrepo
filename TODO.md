@@ -11,12 +11,12 @@
 
 ## ⚡ Priorité 2 — UX rapide
 
-- [ ] Vérifier que le dossier cible n'existe pas déjà avant de scaffolder (message clair)
-- [ ] Valider la valeur de `--category` dans `initmyrepo list` (erreur propre si inconnue)
-- [ ] Flag `--no-install` fonctionnel (désactive les étapes d'installation dans les templates)
-- [ ] Flag `--no-git` en CLI (aujourd'hui uniquement dans le wizard)
-- [ ] `initmyrepo search <query>` → filtrer les templates par mot-clé
-- [ ] `--dry-run` → afficher le résumé + commandes sans rien exécuter
+- [x] Vérifier que le dossier cible n'existe pas déjà avant de scaffolder (message clair)
+- [x] Valider la valeur de `--category` dans `initmyrepo list` (erreur propre si inconnue)
+- [x] Flag `--no-install` fonctionnel (désactive les étapes d'installation dans les templates)
+- [x] Flag `--no-git` en CLI (aujourd'hui uniquement dans le wizard)
+- [x] `initmyrepo search <query>` → filtrer les templates par mot-clé
+- [x] `--dry-run` → afficher le résumé + commandes sans rien exécuter
 
 ---
 

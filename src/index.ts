@@ -35,14 +35,31 @@ program
 program
   .argument("[project-name]", "Project name (skips the first prompt)")
   .option("--fav", "Jump straight to favorites")
-  .action(async (name?: string, opts?: { fav?: boolean }) => {
-    showBanner(version);
-    if (opts?.fav) {
-      await runFavoriteFlow(name);
-    } else {
-      await runWizard(name);
-    }
-  });
+  .option("--no-install", "Skip dependency installation")
+  .option("--no-git", "Skip git initialisation")
+  .option("--dry-run", "Preview steps without creating anything")
+  .action(
+    async (
+      name?: string,
+      opts?: {
+        fav?: boolean;
+        install?: boolean;
+        git?: boolean;
+        dryRun?: boolean;
+      },
+    ) => {
+      showBanner(version);
+      if (opts?.fav) {
+        await runFavoriteFlow(name);
+      } else {
+        await runWizard(name, {
+          noInstall: opts?.install === false,
+          noGit: opts?.git === false,
+          dryRun: opts?.dryRun,
+        });
+      }
+    },
+  );
 
 // ── favorites ─────────────────────────────────────────────────────────────────
 program
@@ -65,6 +82,17 @@ program
   )
   .action(async (opts: { category?: string }) => {
     showBanner(version);
+
+    if (
+      opts.category &&
+      !TEMPLATES_BY_CATEGORY.has(opts.category as Category)
+    ) {
+      console.error(
+        pc.red(`\n  Unknown category: "${opts.category}"`) +
+          pc.dim(`\n  Valid: ${Object.keys(CATEGORY_LABELS).join(" | ")}\n`),
+      );
+      process.exit(1);
+    }
 
     const categories = (
       opts.category
@@ -98,6 +126,38 @@ program
     console.log();
     console.log(pc.dim(`  ${ALL_TEMPLATES.length} templates available`));
     console.log(pc.dim(`  Config: ${config.getPath()}`));
+    console.log();
+  });
+
+// ── search ──────────────────────────────────────────────────────────────────
+program
+  .command("search <query>")
+  .alias("s")
+  .description("Search templates by name, description or tag")
+  .action((query: string) => {
+    showBanner(version);
+    const q = query.toLowerCase();
+    const results = ALL_TEMPLATES.filter(
+      (t) =>
+        t.name.toLowerCase().includes(q) ||
+        t.description.toLowerCase().includes(q) ||
+        t.id.toLowerCase().includes(q) ||
+        (t.badge?.toLowerCase().includes(q) ?? false),
+    );
+
+    if (results.length === 0) {
+      console.log(pc.yellow(`\n  No templates found for "${query}"\n`));
+      return;
+    }
+
+    console.log(pc.bold(`\n  ${results.length} result(s) for "${query}"\n`));
+    for (const t of results) {
+      const badge = t.badge ? pc.dim(` [${t.badge}]`) : "";
+      const interactive = t.interactive ? pc.yellow(" ◆ interactive") : "";
+      console.log(`  ${pc.cyan("◆")} ${pc.bold(t.name)}${badge}${interactive}`);
+      console.log(`    ${pc.dim(t.description)}`);
+      console.log(`    ${pc.dim(t.docs)}`);
+    }
     console.log();
   });
 
