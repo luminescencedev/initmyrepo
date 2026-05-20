@@ -16,16 +16,24 @@ export const CATEGORY_LABELS: Record<Category, string> = {
 
 // ─── Scaffold Step ────────────────────────────────────────────────────────────
 
+export interface StepContext {
+  projectPath: string;
+  projectName: string;
+}
+
 /**
- * A single shell command to execute during scaffolding.
- * `cwd` is relative to the output directory when set.
+ * A single step during scaffolding.
+ * Either provide `cmd` + `args` to run a shell command,
+ * or provide `fn` to run arbitrary async TypeScript logic.
  */
 export interface Step {
   label: string;
-  cmd: string;
-  args: string[];
+  cmd?: string;
+  args?: string[];
   /** Run inside the created project directory */
   inProject?: boolean;
+  /** Run an async function instead of a shell command */
+  fn?: (ctx: StepContext) => Promise<void>;
 }
 
 // ─── Template ────────────────────────────────────────────────────────────────
@@ -54,6 +62,8 @@ export interface Template {
     language?: boolean;
     css?: boolean;
   };
+  /** Warning shown in the wizard before scaffolding */
+  warning?: string;
 }
 
 // ─── Scaffold Context ─────────────────────────────────────────────────────────

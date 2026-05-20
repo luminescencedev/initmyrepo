@@ -164,6 +164,10 @@ export async function runWizard(presetName?: string): Promise<void> {
     });
     if (esc(tmplChoice)) abort();
     selectedTemplate = templates.find((t) => t.id === tmplChoice)!;
+
+    if (selectedTemplate.warning) {
+      p.log.warn(selectedTemplate.warning);
+    }
   }
 
   // ── 3b. Language & CSS (if template supports it) ───────────────────────────

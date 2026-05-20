@@ -35,11 +35,15 @@ export async function scaffold(opts: RunOptions): Promise<string> {
     const cwd = step.inProject ? projectPath : targetDir;
 
     try {
-      await execa(step.cmd, step.args, {
-        cwd,
-        // Interactive templates need to inherit stdio so the user can respond
-        stdio: template.interactive ? "inherit" : "pipe",
-      });
+      if (step.fn) {
+        await step.fn({ projectPath, projectName });
+      } else {
+        await execa(step.cmd!, step.args!, {
+          cwd,
+          // Interactive templates need to inherit stdio so the user can respond
+          stdio: template.interactive ? "inherit" : "pipe",
+        });
+      }
       s.stop(pc.green("✓") + " " + step.label);
     } catch (err) {
       s.stop(pc.red("✗") + " " + step.label);

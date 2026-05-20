@@ -2,10 +2,10 @@
 
 ## 🐛 Priorité 1 — Bugs bloquants
 
-- [ ] **tRPC + Fastify** : clone le repo entier de tRPC au lieu d'un vrai starter → à remplacer
-- [ ] **pnpm workspace** : réécrire `pnpmWorkspaceSteps` en TypeScript pur avec `fs/promises` (actuellement `node --eval` avec `require()` CJS dans un projet ESM)
-- [ ] **Elysia** : ignore le package manager choisi → toujours `bun create elysia` + aucun warning si bun absent
-- [ ] **React Native CLI** : flag `--template react-native-template-typescript` déprécié depuis RN 0.71+
+- [x] **tRPC + Fastify** : clone le repo entier de tRPC au lieu d'un vrai starter → scaffold manuel avec `fs/promises`
+- [x] **pnpm workspace** : réécrire `pnpmWorkspaceSteps` en TypeScript pur avec `fs/promises` (actuellement `node --eval` avec `require()` CJS dans un projet ESM)
+- [x] **Elysia** : ignore le package manager choisi → toujours `bun create elysia` + warning ajouté si bun requis
+- [x] **React Native CLI** : flag `--template react-native-template-typescript` déprécié depuis RN 0.71+
 
 ---
 
