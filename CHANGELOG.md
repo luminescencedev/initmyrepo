@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.1] — 2026-05-20
+
+### Changed
+
+- Bundle all dependencies into the output file (`noExternal`) so `npx initmyrepo@latest` starts instantly without a separate install step
+
 ## [1.0.0] — 2026-05-20
 
 ### Added
