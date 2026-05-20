@@ -8,13 +8,13 @@ import type {
   Language,
   PackageManager,
   Template,
-  WizardResult,
 } from "./types.js";
 import { CATEGORY_LABELS } from "./types.js";
 import { TEMPLATES_BY_CATEGORY } from "./registry/index.js";
 import { config } from "./config.js";
 import { detectPM } from "./pm.js";
 import { scaffold } from "./scaffold.js";
+import { removeGitDir, gitInit } from "./git.js";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -288,7 +288,6 @@ export async function runWizard(presetName?: string): Promise<void> {
       // Clone custom URL
       const s = p.spinner();
       s.start(pc.dim("Cloning repository"));
-      const { execa } = await import("execa");
       await execa("git", ["clone", "--depth=1", customRepoUrl, projectName], {
         cwd: targetDir,
       });
@@ -297,7 +296,6 @@ export async function runWizard(presetName?: string): Promise<void> {
       if (opts.git as boolean) {
         const s2 = p.spinner();
         s2.start(pc.dim("Initialising git"));
-        const { removeGitDir, gitInit } = await import("./git.js");
         await removeGitDir(join(targetDir, projectName));
         await gitInit(join(targetDir, projectName));
         s2.stop(pc.green("✓") + " Git initialised");

@@ -1,5 +1,8 @@
 # initmyrepo
 
+[![CI](https://github.com/luminescencedev/initmyrepo/actions/workflows/ci.yml/badge.svg)](https://github.com/luminescencedev/initmyrepo/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+
 ```
   ██╗███╗   ██╗██╗████████╗    ███╗   ███╗██╗   ██╗
   ██║████╗  ██║██║╚══██╔══╝    ████╗ ████║╚██╗ ██╔╝
@@ -161,4 +164,4 @@ pnpm dev        # watch mode
 
 ## License
 
-MIT © Luminescence Dev
+MIT © Luminescence Dev — see [LICENSE](./LICENSE)
