@@ -48,6 +48,23 @@ export async function scaffold(opts: RunOptions): Promise<string> {
       s.stop(pc.green("✓") + " " + step.label);
     } catch (err) {
       s.stop(pc.red("✗") + " " + step.label);
+
+      // Helpful hint when the command itself is not found
+      if ((err as NodeJS.ErrnoException).code === "ENOENT" && step.cmd) {
+        const install: Record<string, string> = {
+          bun: "curl -fsSL https://bun.sh/install | bash",
+          bunx: "curl -fsSL https://bun.sh/install | bash",
+          pnpm: "npm install -g pnpm",
+          yarn: "npm install -g yarn",
+          npx: "npm install -g npm",
+          git: "https://git-scm.com/downloads",
+        };
+        const hint = install[step.cmd] ?? `npm install -g ${step.cmd}`;
+        throw new Error(
+          `Command not found: "${step.cmd}"\n  → ${hint}`,
+        );
+      }
+
       throw err;
     }
   }

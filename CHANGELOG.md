@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] — 2026-05-20
+
+### Added
+
+- Persist user preferences (`lastPm`, `defaultGit`, `defaultVsCode`) via `conf` — wizard pre-fills from saved prefs on next run
+- `initmyrepo update` (`up`) command: auto-detects global package manager and updates to `@latest`
+- `--json` flag on `initmyrepo list` for machine-readable output
+- Better ENOENT error messages in scaffold: when a command is not found, suggests the install command
+
+## [1.0.3] — 2026-05-20
+
+### Added
+
+- `initmyrepo doctor` (`dr`) command: checks Node.js version (>= 22.13.0), git, and availability of npm / pnpm / yarn / bun with a clear pass/fail summary
+
 ## [1.0.2] — 2026-05-20
 
 ### Changed

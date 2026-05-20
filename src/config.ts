@@ -1,10 +1,16 @@
 import Conf from "conf";
 import { randomUUID } from "crypto";
-import type { Favorite } from "./types.js";
+import type { Favorite, PackageManager } from "./types.js";
 
-const store = new Conf<{ favorites: Favorite[] }>({
+export interface Prefs {
+  lastPm?: PackageManager;
+  defaultGit?: boolean;
+  defaultVsCode?: boolean;
+}
+
+const store = new Conf<{ favorites: Favorite[]; prefs: Prefs }>({
   projectName: "initmyrepo",
-  defaults: { favorites: [] },
+  defaults: { favorites: [], prefs: {} },
 });
 
 export const config = {
@@ -23,6 +29,10 @@ export const config = {
       "favorites",
       store.get("favorites").filter((f) => f.id !== id),
     );
+  },
+  getPrefs: (): Prefs => store.get("prefs"),
+  savePrefs: (patch: Partial<Prefs>): void => {
+    store.set("prefs", { ...store.get("prefs"), ...patch });
   },
   getPath: (): string => store.path,
 };

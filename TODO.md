@@ -31,11 +31,11 @@
 
 ## 🚀 Priorité 4 — Features medium terme
 
-- [ ] `initmyrepo doctor` → vérifier prérequis (git, node version, PMs dispo, bun si Elysia)
-- [ ] Mémoriser les préférences utilisateur (dernier PM, git on/off, vscode on/off) via `conf`
-- [ ] `initmyrepo update` → relancer `npm install -g initmyrepo@latest`
-- [ ] Meilleure gestion des erreurs : détecter "command not found" et proposer comment installer
-- [ ] `--json` sur `initmyrepo list` → output machine-readable
+- [x] `initmyrepo doctor` → vérifier prérequis (git, node version, PMs dispo, bun si Elysia)
+- [x] Mémoriser les préférences utilisateur (dernier PM, git on/off, vscode on/off) via `conf`
+- [x] `initmyrepo update` → relancer `npm install -g initmyrepo@latest`
+- [x] Meilleure gestion des erreurs : détecter "command not found" et proposer comment installer
+- [x] `--json` sur `initmyrepo list` → output machine-readable
 
 ---
 

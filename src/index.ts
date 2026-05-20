@@ -3,8 +3,10 @@ import { createRequire } from "module";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import pc from "picocolors";
+import { execa } from "execa";
 import { showBanner } from "./banner.js";
 import { runWizard, manageFavoritesFlow, runFavoriteFlow } from "./wizard.js";
+import { runDoctor } from "./doctor.js";
 import { config } from "./config.js";
 import { ALL_TEMPLATES, TEMPLATES_BY_CATEGORY } from "./registry/index.js";
 import { CATEGORY_LABELS } from "./types.js";
@@ -80,9 +82,8 @@ program
     "-c, --category <name>",
     "Filter by category (web|mobile|backend|fullstack|monorepo)",
   )
-  .action(async (opts: { category?: string }) => {
-    showBanner(version);
-
+  .option("--json", "Output as machine-readable JSON")
+  .action(async (opts: { category?: string; json?: boolean }) => {
     if (
       opts.category &&
       !TEMPLATES_BY_CATEGORY.has(opts.category as Category)
@@ -99,6 +100,24 @@ program
         ? [opts.category as Category]
         : (Object.keys(CATEGORY_LABELS) as Category[])
     ).filter((c) => TEMPLATES_BY_CATEGORY.has(c));
+
+    if (opts.json) {
+      const output = categories.flatMap((cat) =>
+        (TEMPLATES_BY_CATEGORY.get(cat) ?? []).map((t) => ({
+          id: t.id,
+          name: t.name,
+          category: cat,
+          description: t.description,
+          docs: t.docs,
+          ...(t.badge ? { badge: t.badge } : {}),
+          ...(t.interactive ? { interactive: true } : {}),
+        })),
+      );
+      console.log(JSON.stringify(output, null, 2));
+      return;
+    }
+
+    showBanner(version);
 
     for (const cat of categories) {
       const templates = TEMPLATES_BY_CATEGORY.get(cat)!;
@@ -161,4 +180,55 @@ program
     console.log();
   });
 
+// ── doctor ──────────────────────────────────────────────────────────────────
+program
+  .command("doctor")
+  .alias("dr")
+  .description("Check that all prerequisites are installed and up to date")
+  .action(async () => {
+    await runDoctor();
+  });
+// ── update ────────────────────────────────────────────────────────────────────
+program
+  .command("update")
+  .alias("up")
+  .description("Update initmyrepo to the latest version")
+  .action(async () => {
+    // Detect an available global package manager (prefer pnpm > bun > yarn > npm)
+    async function hasCmd(cmd: string): Promise<boolean> {
+      try {
+        await execa(cmd, ["--version"]);
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
+    let pm = "npm";
+    if (await hasCmd("pnpm")) pm = "pnpm";
+    else if (await hasCmd("bun")) pm = "bun";
+    else if (await hasCmd("yarn")) pm = "yarn";
+
+    const installArgs: Record<string, string[]> = {
+      npm: ["install", "-g", "initmyrepo@latest"],
+      pnpm: ["add", "-g", "initmyrepo@latest"],
+      yarn: ["global", "add", "initmyrepo@latest"],
+      bun: ["install", "-g", "initmyrepo@latest"],
+    };
+
+    console.log(
+      pc.bold(`\n  Updating initmyrepo via ${pm}…\n`),
+    );
+
+    try {
+      await execa(pm, installArgs[pm]!, { stdio: "inherit" });
+      console.log(pc.green("\n  ✔ initmyrepo updated successfully.\n"));
+    } catch {
+      console.error(
+        pc.red("\n  ✘ Update failed.") +
+          pc.dim(`\n  Try manually: ${pm} ${installArgs[pm]!.join(" ")}\n`),
+      );
+      process.exit(1);
+    }
+  });
 program.parse();

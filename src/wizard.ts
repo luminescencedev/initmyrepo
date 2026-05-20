@@ -62,6 +62,8 @@ export async function runWizard(
     `${tag("initmyrepo")}  ${pc.dim("Initialize any project in seconds")}`,
   );
 
+  const prefs = config.getPrefs();
+
   // ── 1. Project name ────────────────────────────────────────────────────────
   let projectName = presetName?.trim();
 
@@ -219,7 +221,7 @@ export async function runWizard(
 
   const pm = await p.select({
     message: "Package manager",
-    initialValue: detected ?? "npm",
+    initialValue: prefs.lastPm ?? detected ?? "npm",
     options: [
       {
         value: "npm",
@@ -253,12 +255,12 @@ export async function runWizard(
           ? Promise.resolve(false as boolean)
           : p.confirm({
               message: "Initialize git repository",
-              initialValue: true,
+              initialValue: prefs.defaultGit ?? true,
             }),
       vscode: () =>
         p.confirm({
           message: "Open in VS Code when done",
-          initialValue: false,
+          initialValue: prefs.defaultVsCode ?? false,
         }),
     },
     { onCancel: () => abort() },
@@ -382,6 +384,12 @@ export async function runWizard(
     }
 
     const pmCmd = (pm as string) === "npm" ? "npm run" : (pm as string);
+
+    config.savePrefs({
+      lastPm: pm as PackageManager,
+      defaultGit: opts.git as boolean,
+      defaultVsCode: opts.vscode as boolean,
+    });
 
     p.outro(
       pc.green("✓ Done!") +
