@@ -22,10 +22,10 @@
 
 ## 🧪 Priorité 3 — Qualité projet
 
-- [ ] **Tests Vitest** : unit tests sur `pm.ts` (dlx, create, installStep, detectPM) + validations wizard
-- [ ] **CHANGELOG.md** avec les entrées depuis le début
-- [ ] **`.nvmrc`** contenant `22`
-- [ ] **Semantic release** : changesets ou semantic-release + GitHub Action publish npm sur tag
+- [x] **Tests Vitest** : unit tests sur `pm.ts` (dlx, create, installStep, detectPM) + validations wizard
+- [x] **CHANGELOG.md** avec les entrées depuis le début
+- [x] **`.nvmrc`** contenant `22`
+- [x] **Semantic release** : GitHub Action publish npm sur tag `v*.*.*`
 
 ---
 

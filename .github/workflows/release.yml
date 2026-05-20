@@ -1,14 +1,13 @@
-name: CI
+name: Release & Publish
 
 on:
   push:
-    branches: [master]
-  pull_request:
-    branches: [master]
+    tags:
+      - "v*.*.*"
 
 jobs:
-  ci:
-    name: Typecheck & Build
+  release:
+    name: Build & Publish to npm
     runs-on: ubuntu-latest
 
     steps:
@@ -22,6 +21,7 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
+          registry-url: https://registry.npmjs.org
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -34,3 +34,8 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+      - name: Publish to npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
