@@ -1,2 +1,25 @@
 dist/
 node_modules/
+
+# Generated outputs
+demo.gif
+*.tgz
+
+# Secrets / local config — NEVER commit these
+.env
+.env.*
+!.env.example
+.npmrc
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+.nyc_output/
