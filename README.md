@@ -1,5 +1,6 @@
 # initmyrepo
 
+[![npm version](https://img.shields.io/npm/v/initmyrepo.svg)](https://www.npmjs.com/package/initmyrepo)
 [![CI](https://github.com/luminescencedev/initmyrepo/actions/workflows/ci.yml/badge.svg)](https://github.com/luminescencedev/initmyrepo/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
@@ -20,6 +21,20 @@
 ```
 
 **Initialize any project -- web, mobile, API, monorepo -- in seconds.**
+
+## Install
+
+```bash
+# npx (no install needed)
+npx initmyrepo@latest
+
+# Global via npm
+npm install -g initmyrepo
+
+# Homebrew (macOS / Linux)
+brew tap luminescencedev/tap
+brew install initmyrepo
+```
 
 ## Usage
 

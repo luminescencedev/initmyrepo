@@ -51,7 +51,7 @@
 
 ## 📦 Priorité 6 — Distribution & visibilité
 
-- [ ] Publier sur npm (`npm publish`)
-- [ ] Tester `npx initmyrepo@latest` post-publish
-- [ ] README avec GIF/screencast (outil : [VHS](https://github.com/charmbracelet/vhs))
-- [ ] Formula Homebrew
+- [x] Publier sur npm (`npm publish`)
+- [x] Tester `npx initmyrepo@latest` post-publish
+- [x] README avec GIF/screencast (outil : [VHS](https://github.com/charmbracelet/vhs))
+- [x] Formula Homebrew
