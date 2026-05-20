@@ -32,9 +32,6 @@ npx initmyrepo@latest my-project
 
 # Jump straight to favorites
 npx initmyrepo@latest --fav
-
-# Short alias
-npx imr
 ```
 
 ## Templates -- 25 total

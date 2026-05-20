@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.2] — 2026-05-20
+
+### Changed
+
+- Remove `imr` short alias (conflicts with existing npm package) and update README accordingly
+
 ## [1.0.1] — 2026-05-20
 
 ### Changed

@@ -1,11 +1,10 @@
 {
   "name": "initmyrepo",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Initialize any project — web, mobile, API, monorepo — in seconds",
   "type": "module",
   "bin": {
-    "initmyrepo": "./dist/index.js",
-    "imr": "./dist/index.js"
+    "initmyrepo": "./dist/index.js"
   },
   "scripts": {
     "dev": "tsup --watch",
