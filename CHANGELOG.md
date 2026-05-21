@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.2] - 2026-05-21
+
+### Fixed
+- `initmyrepo update`: fallback to npm when the detected PM fails (e.g. pnpm `minimumReleaseAge` policy error)
+
 ## [1.4.1] - 2026-05-21
 
 ### Added

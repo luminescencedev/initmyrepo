@@ -204,39 +204,46 @@ program
   .alias("up")
   .description("Update initmyrepo to the latest version")
   .action(async () => {
-    // Detect an available global package manager (prefer pnpm > bun > yarn > npm)
     async function hasCmd(cmd: string): Promise<boolean> {
       try {
-        await execa(cmd, ["--version"]);
+        await execa(cmd, ["--version"], { stdio: "pipe" });
         return true;
       } catch {
         return false;
       }
     }
 
-    let pm = "npm";
-    if (await hasCmd("pnpm")) pm = "pnpm";
-    else if (await hasCmd("bun")) pm = "bun";
-    else if (await hasCmd("yarn")) pm = "yarn";
-
     const installArgs: Record<string, string[]> = {
-      npm: ["install", "-g", "initmyrepo@latest"],
-      pnpm: ["add", "-g", "initmyrepo@latest"],
-      yarn: ["global", "add", "initmyrepo@latest"],
-      bun: ["install", "-g", "initmyrepo@latest"],
+      npm:  ["install", "-g", "initmyrepo@latest"],
+      pnpm: ["add",     "-g", "initmyrepo@latest"],
+      yarn: ["global",  "add", "initmyrepo@latest"],
+      bun:  ["install", "-g", "initmyrepo@latest"],
     };
 
-    console.log(pc.bold(`\n  Updating initmyrepo via ${pm}…\n`));
+    // Build ordered list: preferred PM first, npm always as final fallback
+    const preferred: string[] = [];
+    if (await hasCmd("pnpm")) preferred.push("pnpm");
+    else if (await hasCmd("bun")) preferred.push("bun");
+    else if (await hasCmd("yarn")) preferred.push("yarn");
+    const pms = [...new Set([...preferred, "npm"])];
 
-    try {
-      await execa(pm, installArgs[pm]!, { stdio: "inherit" });
-      console.log(pc.green("\n  ✔ initmyrepo updated successfully.\n"));
-    } catch {
-      console.error(
-        pc.red("\n  ✘ Update failed.") +
-          pc.dim(`\n  Try manually: ${pm} ${installArgs[pm]!.join(" ")}\n`),
-      );
-      process.exit(1);
+    for (const pm of pms) {
+      console.log(pc.bold(`\n  Updating initmyrepo via ${pm}…\n`));
+      try {
+        await execa(pm, installArgs[pm]!, { stdio: "inherit" });
+        console.log(pc.green("\n  ✔ initmyrepo updated successfully.\n"));
+        return;
+      } catch {
+        if (pm !== pms[pms.length - 1]) {
+          console.log(pc.yellow(`  ⚠ ${pm} failed, retrying with npm…\n`));
+        }
+      }
     }
+
+    console.error(
+      pc.red("\n  ✘ Update failed.") +
+        pc.dim(`\n  Try manually: npm install -g initmyrepo@latest\n`),
+    );
+    process.exit(1);
   });
 program.parse();
