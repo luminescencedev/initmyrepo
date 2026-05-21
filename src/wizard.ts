@@ -642,7 +642,12 @@ export async function manageFavoritesFlow(): Promise<void> {
   } else if (action === "add") {
     const url = await p.text({
       message: "Git URL",
-      validate: (v) => (!v.trim() ? "Required" : undefined),
+      placeholder: "https://github.com/user/template",
+      validate: (v) => {
+        if (!v.trim()) return "Required";
+        if (!v.startsWith("http") && !v.startsWith("git@"))
+          return "Invalid git URL — must start with https:// or git@";
+      },
     });
     if (!esc(url)) await promptSaveFavorite(url as string);
   } else if (action === "delete") {

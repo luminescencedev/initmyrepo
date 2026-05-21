@@ -16,6 +16,27 @@ export interface ExternalTemplateDef {
   docs?: string;
 }
 
+// ─── Validation ────────────────────────────────────────────────────────────────
+
+/** Allow only https://, http://, and git@host:path — blocks ext::, file://, etc. */
+export function isSafeGitUrl(url: string): boolean {
+  return /^https?:\/\/.+/.test(url) || /^git@[^:]+:.+/.test(url);
+}
+
+function isValidDef(def: unknown): def is ExternalTemplateDef {
+  if (!def || typeof def !== "object") return false;
+  const d = def as Record<string, unknown>;
+  return (
+    typeof d.id === "string" &&
+    d.id.length > 0 &&
+    typeof d.name === "string" &&
+    d.name.length > 0 &&
+    typeof d.description === "string" &&
+    typeof d.repoUrl === "string" &&
+    isSafeGitUrl(d.repoUrl)
+  );
+}
+
 interface RcFile {
   /** Inline custom templates */
   templates?: ExternalTemplateDef[];
@@ -26,6 +47,11 @@ interface RcFile {
 // ─── Conversion ────────────────────────────────────────────────────────────────
 
 export function externalToTemplate(def: ExternalTemplateDef): Template {
+  if (!isSafeGitUrl(def.repoUrl)) {
+    throw new Error(
+      `External template "${def.id}" has an unsafe repoUrl: "${def.repoUrl}"`,
+    );
+  }
   return {
     id: `ext:${def.id}`,
     name: def.name,
@@ -72,11 +98,18 @@ export async function loadExternalTemplates(): Promise<Template[]> {
       }
 
       for (const url of rc.registries ?? []) {
+        if (typeof url !== "string" || !url.startsWith("https://")) {
+          console.warn(`[initmyrepo] Skipping registry — only HTTPS URLs are allowed: "${url}"`);
+          continue;
+        }
         try {
           const res = await fetch(url, { signal: AbortSignal.timeout(3000) });
           if (res.ok) {
-            const data = (await res.json()) as ExternalTemplateDef[];
-            if (Array.isArray(data)) defs.push(...data);
+            const data = (await res.json()) as unknown[];
+            if (Array.isArray(data)) {
+              const valid = data.filter(isValidDef);
+              defs.push(...valid);
+            }
           }
         } catch {
           /* network error — skip silently */
