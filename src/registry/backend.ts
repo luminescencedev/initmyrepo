@@ -112,6 +112,51 @@ export const BACKEND_TEMPLATES: Template[] = [
   },
 
   {
+    id: "hono-bun",
+    category: "backend",
+    name: "Hono + Bun",
+    description: "Ultra-fast Hono · Bun runtime · TypeScript",
+    badge: "Bun",
+    docs: "https://hono.dev",
+    warning:
+      'This template requires Bun. Install it from https://bun.sh',
+    steps: ({ projectName }) => [
+      {
+        label: "Creating Hono + Bun project",
+        fn: async ({ projectPath }) => {
+          try {
+            await execa("bun", ["--version"], { stdio: "pipe" });
+          } catch {
+            throw new Error(
+              "bun is not installed or not in PATH.\n  Install it from https://bun.sh then retry.",
+            );
+          }
+          await execa("bun", ["create", "hono", projectName, "--template", "bun"], {
+            cwd: join(projectPath, ".."),
+            stdio: "inherit",
+          });
+        },
+      },
+    ],
+  },
+
+  {
+    id: "cloudflare-worker",
+    category: "backend",
+    name: "Cloudflare Worker",
+    description: "Edge-first serverless · TypeScript · Wrangler · Hono compatible",
+    badge: "Edge",
+    docs: "https://developers.cloudflare.com/workers",
+    interactive: true,
+    steps: ({ projectName, pm }) => [
+      {
+        label: "Creating Cloudflare Worker (interactive)",
+        ...create(pm, "cloudflare@latest", projectName),
+      },
+    ],
+  },
+
+  {
     id: "trpc-server",
     category: "backend",
     name: "tRPC + Fastify",

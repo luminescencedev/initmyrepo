@@ -51,7 +51,7 @@ npx initmyrepo@latest my-project
 npx initmyrepo@latest --fav
 ```
 
-## Templates -- 25 total
+## Templates -- 27 total
 
 For Vite-based templates (React, Vue, Svelte, SolidJS), the wizard asks you to choose:
 
@@ -81,16 +81,18 @@ For Vite-based templates (React, Vue, Svelte, SolidJS), the wizard asks you to c
 | Expo Router      | File-based routing - iOS / Android / Web |
 | React Native CLI | Bare React Native - TypeScript           |
 
-### Backend / API (6)
+### Backend / API (8)
 
-| Template       | Stack                                     |
-| -------------- | ----------------------------------------- |
-| Hono           | Ultra-fast - TypeScript - Node / Edge     |
-| Fastify        | High-perf - TypeScript - JSON Schema      |
-| NestJS         | Enterprise - TypeScript - Modular         |
-| Express API    | Minimal REST - TypeScript                 |
-| Elysia         | Bun-first - TypeScript - End-to-end types |
-| tRPC + Fastify | Type-safe API - TypeScript                |
+| Template            | Stack                                     |
+| ------------------- | ----------------------------------------- |
+| Hono                | Ultra-fast - TypeScript - Node / Edge     |
+| Hono + Bun          | Ultra-fast - Bun runtime - TypeScript     |
+| Cloudflare Worker   | Edge serverless - TypeScript - Wrangler   |
+| Fastify             | High-perf - TypeScript - JSON Schema      |
+| NestJS              | Enterprise - TypeScript - Modular         |
+| Express API         | Minimal REST - TypeScript                 |
+| Elysia              | Bun-first - TypeScript - End-to-end types |
+| tRPC + Fastify      | Type-safe API - TypeScript                |
 
 ### Full-stack (3)
 
