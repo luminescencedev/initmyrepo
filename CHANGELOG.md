@@ -2,10 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.4.2] - 2026-05-21
+## [1.4.3] - 2026-05-21
 
 ### Fixed
-- `initmyrepo update`: fallback to npm when the detected PM fails (e.g. pnpm `minimumReleaseAge` policy error)
+- `initmyrepo update`: revert silent npm fallback — respect the user's PM security policies and show the error with the manual command instead
+
+## [1.4.2] - 2026-05-21
+
+### Changed
+- `initmyrepo update`: fallback to npm when the detected PM fails (reverted in 1.4.3)
 
 ## [1.4.1] - 2026-05-21
 

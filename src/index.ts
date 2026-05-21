@@ -220,30 +220,22 @@ program
       bun:  ["install", "-g", "initmyrepo@latest"],
     };
 
-    // Build ordered list: preferred PM first, npm always as final fallback
-    const preferred: string[] = [];
-    if (await hasCmd("pnpm")) preferred.push("pnpm");
-    else if (await hasCmd("bun")) preferred.push("bun");
-    else if (await hasCmd("yarn")) preferred.push("yarn");
-    const pms = [...new Set([...preferred, "npm"])];
+    let pm = "npm";
+    if (await hasCmd("pnpm")) pm = "pnpm";
+    else if (await hasCmd("bun")) pm = "bun";
+    else if (await hasCmd("yarn")) pm = "yarn";
 
-    for (const pm of pms) {
-      console.log(pc.bold(`\n  Updating initmyrepo via ${pm}…\n`));
-      try {
-        await execa(pm, installArgs[pm]!, { stdio: "inherit" });
-        console.log(pc.green("\n  ✔ initmyrepo updated successfully.\n"));
-        return;
-      } catch {
-        if (pm !== pms[pms.length - 1]) {
-          console.log(pc.yellow(`  ⚠ ${pm} failed, retrying with npm…\n`));
-        }
-      }
+    console.log(pc.bold(`\n  Updating initmyrepo via ${pm}…\n`));
+
+    try {
+      await execa(pm, installArgs[pm]!, { stdio: "inherit" });
+      console.log(pc.green("\n  ✔ initmyrepo updated successfully.\n"));
+    } catch {
+      console.error(
+        pc.red("\n  ✘ Update failed.") +
+          pc.dim(`\n  Run manually: ${pm} ${installArgs[pm]!.join(" ")}\n`),
+      );
+      process.exit(1);
     }
-
-    console.error(
-      pc.red("\n  ✘ Update failed.") +
-        pc.dim(`\n  Try manually: npm install -g initmyrepo@latest\n`),
-    );
-    process.exit(1);
   });
 program.parse();
