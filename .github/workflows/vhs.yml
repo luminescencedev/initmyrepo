@@ -1,0 +1,22 @@
+name: Generate VHS demo GIF
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - demo.tape
+
+jobs:
+  vhs:
+    name: Record terminal demo
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: charmbracelet/vhs-action@v2
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: regenerate demo.gif"
+          file_pattern: "*.gif"

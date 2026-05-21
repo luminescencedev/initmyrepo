@@ -20,6 +20,8 @@
   ╚═╝  ╚═╝╚══════╝╚═╝      ╚═════╝
 ```
 
+![Demo](demo.gif)
+
 **Initialize any project -- web, mobile, API, monorepo -- in seconds.**
 
 ## Install
