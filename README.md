@@ -51,7 +51,7 @@ npx initmyrepo@latest my-project
 npx initmyrepo@latest --fav
 ```
 
-## Templates -- 27 total
+## Templates -- 30 total
 
 For Vite-based templates (React, Vue, Svelte, SolidJS), the wizard asks you to choose:
 
@@ -70,7 +70,7 @@ For Vite-based templates (React, Vue, Svelte, SolidJS), the wizard asks you to c
 | Astro           | SSG/SSR - TypeScript                       |
 | SvelteKit       | SSR - TypeScript - File-based routing      |
 | Nuxt 3          | SSR - TypeScript - Auto-imports            |
-| Remix           | SSR - TypeScript - Nested routes           |
+| Remix           | Vite - TypeScript - Nested routes          |
 | TanStack Start  | Full-stack React - TypeScript - tRPC ready |
 
 ### Mobile (3)
@@ -81,12 +81,13 @@ For Vite-based templates (React, Vue, Svelte, SolidJS), the wizard asks you to c
 | Expo Router      | File-based routing - iOS / Android / Web |
 | React Native CLI | Bare React Native - TypeScript           |
 
-### Backend / API (8)
+### Backend / API (9)
 
 | Template            | Stack                                     |
 | ------------------- | ----------------------------------------- |
 | Hono                | Ultra-fast - TypeScript - Node / Edge     |
 | Hono + Bun          | Ultra-fast - Bun runtime - TypeScript     |
+| Nitro               | Universal server - TypeScript - UnJS      |
 | Cloudflare Worker   | Edge serverless - TypeScript - Wrangler   |
 | Fastify             | High-perf - TypeScript - JSON Schema      |
 | NestJS              | Enterprise - TypeScript - Modular         |
@@ -94,13 +95,14 @@ For Vite-based templates (React, Vue, Svelte, SolidJS), the wizard asks you to c
 | Elysia              | Bun-first - TypeScript - End-to-end types |
 | tRPC + Fastify      | Type-safe API - TypeScript                |
 
-### Full-stack (3)
+### Full-stack (4)
 
-| Template          | Stack                                           |
-| ----------------- | ----------------------------------------------- |
-| T3 Stack          | Next.js - tRPC - Prisma - NextAuth              |
-| Better T Stack    | Hono/Elysia - tRPC/oRPC - Drizzle - Better Auth |
-| Next.js + Payload | App Router - Payload CMS 3 - PostgreSQL         |
+| Template              | Stack                                           |
+| --------------------- | ----------------------------------------------- |
+| T3 Stack              | Next.js - tRPC - Prisma - NextAuth              |
+| Better T Stack        | Hono/Elysia - tRPC/oRPC - Drizzle - Better Auth |
+| SvelteKit + Drizzle   | SSR - TypeScript - Drizzle ORM                  |
+| Next.js + Payload     | App Router - Payload CMS 3 - PostgreSQL         |
 
 ### Monorepo (3)
 

@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0] - 2026-05-21
+
+### Added
+- **Nitro** backend template — standalone universal server by UnJS, edge-ready
+- **SvelteKit + Drizzle** fullstack template — SvelteKit with Drizzle ORM pre-selected (interactive)
+
+### Changed
+- Remix template: updated description and badge to reflect Vite (Remix v2 uses Vite by default)
+
 ## [1.3.0] - 2026-05-21
 
 ### Added

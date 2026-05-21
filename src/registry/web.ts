@@ -152,8 +152,8 @@ export const WEB_TEMPLATES: Template[] = [
     id: "remix",
     category: "web",
     name: "Remix",
-    description: "Full-stack web framework · TypeScript · Nested routes",
-    badge: "SSR",
+    description: "Full-stack web framework · TypeScript · Vite · Nested routes",
+    badge: "Vite",
     docs: "https://remix.run",
     interactive: true,
     steps: ({ projectName, pm }) => [

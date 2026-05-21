@@ -1,6 +1,6 @@
 {
   "name": "initmyrepo",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Initialize any project — web, mobile, API, monorepo — in seconds",
   "type": "module",
   "bin": {

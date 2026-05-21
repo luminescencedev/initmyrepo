@@ -1,5 +1,5 @@
 import type { Template } from '../types.js'
-import { create, installStep } from '../pm.js'
+import { create, dlx, installStep } from '../pm.js'
 
 export const FULLSTACK_TEMPLATES: Template[] = [
   {
@@ -30,6 +30,22 @@ export const FULLSTACK_TEMPLATES: Template[] = [
       {
         label: 'Creating Better T Stack (interactive)',
         ...create(pm, 'better-t-stack@latest', projectName),
+      },
+    ],
+  },
+
+  {
+    id: 'sveltekit-drizzle',
+    category: 'fullstack',
+    name: 'SvelteKit + Drizzle',
+    description: 'Full-stack Svelte · TypeScript · Drizzle ORM · File-based routing',
+    badge: 'NEW',
+    docs: 'https://orm.drizzle.team',
+    interactive: true,
+    steps: ({ projectName, pm }) => [
+      {
+        label: 'Creating SvelteKit + Drizzle project (interactive)',
+        ...dlx(pm, 'sv@latest', 'create', projectName, '--with', 'drizzle'),
       },
     ],
   },

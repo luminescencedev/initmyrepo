@@ -112,6 +112,22 @@ export const BACKEND_TEMPLATES: Template[] = [
   },
 
   {
+    id: "nitro",
+    category: "backend",
+    name: "Nitro",
+    description: "Universal server toolkit · TypeScript · Edge ready · UnJS ecosystem",
+    badge: "UnJS",
+    docs: "https://nitro.unjs.io",
+    steps: ({ projectName, pm }) => [
+      {
+        label: "Creating Nitro project",
+        ...dlx(pm, "giget@latest", "nitro-app", projectName),
+      },
+      installStep(pm),
+    ],
+  },
+
+  {
     id: "hono-bun",
     category: "backend",
     name: "Hono + Bun",
