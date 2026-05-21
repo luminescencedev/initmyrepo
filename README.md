@@ -38,6 +38,8 @@ brew tap luminescencedev/tap
 brew install initmyrepo
 ```
 
+> Once installed globally, you can use either `initmyrepo` or the short alias `imr`.
+
 ## Usage
 
 ```bash
@@ -49,6 +51,11 @@ npx initmyrepo@latest my-project
 
 # Jump straight to favorites
 npx initmyrepo@latest --fav
+
+# Short alias (after global install)
+imr
+imr my-project
+imr --fav
 ```
 
 ## Templates -- 30 total
@@ -117,6 +124,7 @@ For Vite-based templates (React, Vue, Svelte, SolidJS), the wizard asks you to c
 ```bash
 # Interactive wizard
 initmyrepo [project-name]
+imr [project-name]
 
 # Jump to favorites (use or manage)
 initmyrepo --fav
