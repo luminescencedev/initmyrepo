@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.1] - 2026-05-21
+
+### Added
+- `imr` as a short alias for the `initmyrepo` command
+
 ## [1.4.0] - 2026-05-21
 
 ### Added
